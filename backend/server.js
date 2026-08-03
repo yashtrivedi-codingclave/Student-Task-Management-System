@@ -16,10 +16,26 @@ const app = express();
 
 // --- Global middleware ---
 
-// Allow the frontend (running on a different port) to call this API.
+// Allow local + deployed frontends. CLIENT_URL may be a single URL or
+// a comma-separated list (set on Render to your Vercel URL).
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://student-task-management-system-sigma.vercel.app",
+  ...(process.env.CLIENT_URL || "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean),
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin(origin, callback) {
+      // No Origin header = same-origin / tools like Postman / curl.
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`Not allowed by CORS: ${origin}`));
+    },
     credentials: true,
   })
 );
