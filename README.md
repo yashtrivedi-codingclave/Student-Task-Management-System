@@ -208,10 +208,10 @@ After deploying:
 
 ## Demo Login Credentials
 
-> After deploying, create a demo account and list it here, e.g.:
->
-> - **Email:** demo@example.com
-> - **Password:** 123456
+- **Email:** demo@example.com
+- **Password:** 123456
+
+> Re-seed anytime from the backend folder: `npm run seed`
 
 ---
 
